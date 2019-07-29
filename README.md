@@ -1,7 +1,37 @@
 # Q3-19-NodeJS-Course
 
-## 1. Task: Read/ list all files within directory. 
+## Task #2 Create HTTP Server
 
-for reverse order: `npm run start reverse-order`    
-branch: [read-files-from-directory](https://github.com/jamland/Q3-19-NodeJS-Course/tree/read-files-from-directory)   
-demo: [codesandbox](https://codesandbox.io/s/read-files-structure-w-nodejs-h8bzb)   
+Создать http сервер с двумя ендпоинтами
+
+### POST
+
+`/sum`  
+Parameters
+Query: a - первое число
+Body: { b: ... } // второе число
+Response
+{ answer: ... } // сумма a и b
+Если все ок то статус 200
+Иначе если хотя бы одно из слагаемых не валидно статус должен быть 400 а ответ:  
+`{ message: “please provide valid arguments” }`
+
+### GET
+
+`/anything`  
+ Тут обработчик должен идти на любой ресурс как я примером показал fake api и тащить оттуда что нибудь и возвращать это в ответ. Обязательно не использовать http.get
+
+Этот сервер должен быть запущен на вашем ec2 инстансе
+(Ссылка будет содержать айпи и порт)
+
+Во время проверки я просто буду вызывать енд поинты через постман
+
+## Run
+
+```
+npm run start
+```
+
+## ☘️ LIVE
+
+[http://18.195.167.39:8000/anything](http://18.195.167.39:8000/anything)
