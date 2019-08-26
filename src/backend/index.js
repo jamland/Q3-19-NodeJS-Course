@@ -29,7 +29,7 @@ const options = {
 const logger = (req, res, next) => {
   console.log(
     `📩 New ${req.method} request to the path: ${req.url}
-    ⏱  ${currentTime()},
+⏱  ${currentTime()},
   `
   );
   next();
@@ -46,7 +46,7 @@ const todoList = [
 ];
 
 app.use(logger);
-app.use(express.static('public', options));
+// app.use(express.static('public', options));
 // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
@@ -62,18 +62,22 @@ app.get('/', (req, res, next) => {
       console.log('Sent:', fileName);
     }
   });
-  // res.send(JSON.stringify(todoList))
 });
 
 app.get('/upload', (req, res, next) => {
-  // fs.readFile(__dirname + '/data.txt', function(err, data) {
-  //   res.send(data);
-  // });
-  // var stream = fs.createReadStream(__dirname + '/data.txt');
-  // stream.pipe(res);
+  fs.readdir(__dirname + '/uploads/', (err, files) => {
+    if (files) {
+      console.log('-----------')
+      console.log(`${files.length} files uploaded:\n`)
+      files.forEach(file => {
+        console.log(file);
+      });
+      console.log('-----------\n')
+    }
+  });
 
   var fileName = 'upload.html';
-  res.sendFile(fileName, {}, function(err) {
+  res.sendFile(fileName, options, function(err) {
     if (err) {
       next(err);
     } else {
@@ -83,20 +87,12 @@ app.get('/upload', (req, res, next) => {
 });
 
 app.post('/upload', (req, res, next) => {
-  // fs.readFile(__dirname + '/data.txt', function(err, data) {
-  //   res.send(data);
-  // });
-  // var stream = fs.createReadStream(__dirname + '/data.txt');
-  // stream.pipe(res);
-  // req.pipe(fs.createWriteStream('./uploadFile.txt'));
-  // req.on('end', next);
-  // var stream = fs.createReadStream(req);
-  // const file = fs.createWriteStream('./uploadedFile.txt')
-  // stream.pipe(data => console.log('data', data));
+  
   req.pipe(req.busboy);
-  req.busboy.on('file', function(fieldname, file, filename) {
+  req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
     console.log('Uploading: ' + filename);
-    fstream = fs.createWriteStream(__dirname + '/' + filename);
+    console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+    fstream = fs.createWriteStream(__dirname + '/uploads/' + filename);
     file.pipe(fstream);
     fstream.on('close', function() {
       res.redirect('back');
