@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/backend/index.js localhost 8080",
+    "start-5": "nodemon src/task-5/index.js localhost 8080",
     "pm2": "pm2 start ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
